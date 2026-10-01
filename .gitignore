@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
+.env
+.venv/
+venv/
+env/
+staticfiles/
+media/
+.idea/
+.vscode/
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+
+# Archivos de bloqueo que crea Word al abrir un .docx
+~$*.docx
