@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ genre.name }}{% endblock %}
+
+{% block content %}
+  <h1>Peliculas de {{ genre.name }}</h1>
+
+  <div class="grid">
+    {% for movie in movies %}
+      <article class="card">
+        <h2><a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a></h2>
+        <p class="meta">{{ movie.year }}</p>
+        <p class="score">
+          {% if movie.avg_score %}{{ movie.avg_score|floatformat:2 }} / 10{% else %}Sin valoraciones{% endif %}
+        </p>
+      </article>
+    {% empty %}
+      <p>No hay peliculas en este genero.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

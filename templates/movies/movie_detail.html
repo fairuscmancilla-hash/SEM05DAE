@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+  <article class="detail">
+    <h1>{{ movie.title }}</h1>
+    <p class="meta">{{ movie.year }}</p>
+    <p class="genres">
+      {% for genre in movie.genres.all %}
+        <a href="{% url 'movies:genre_detail' genre.pk %}">{{ genre.name }}</a>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p class="score">
+      {% if movie.avg_score %}{{ movie.avg_score|floatformat:2 }} / 10 ({{ movie.rating_count }} valoraciones){% else %}Sin valoraciones{% endif %}
+    </p>
+    <p>{{ movie.synopsis|default:"Sin sinopsis." }}</p>
+
+    {% if movie.people.all %}
+      <h2>Personas</h2>
+      <ul>
+        {% for person in movie.people.all %}<li>{{ person }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    <h2>Valoraciones</h2>
+    <ul class="ratings">
+      {% for rating in movie.ratings.all %}
+        <li><strong>{{ rating.score }}/10</strong> {{ rating.reviewer }}{% if rating.comment %} &mdash; {{ rating.comment }}{% endif %}</li>
+      {% empty %}
+        <li>Sin valoraciones.</li>
+      {% endfor %}
+    </ul>
+  </article>
+
+  <section>
+    <h2>Recomendaciones del mismo genero</h2>
+    <div class="grid">
+      {% for recommended in recommendations %}
+        <article class="card">
+          <h3><a href="{% url 'movies:movie_detail' recommended.pk %}">{{ recommended.title }}</a></h3>
+          <p class="meta">{{ recommended.year }}</p>
+          <p class="score">{{ recommended.avg_score|floatformat:2 }} / 10</p>
+        </article>
+      {% empty %}
+        <p>No hay peliculas recomendadas todavia.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
